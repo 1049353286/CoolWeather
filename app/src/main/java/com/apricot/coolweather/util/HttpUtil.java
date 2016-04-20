@@ -1,5 +1,7 @@
 package com.apricot.coolweather.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,14 +30,20 @@ public class HttpUtil {
                     while((line=reader.readLine())!=null){
                         response.append(line);
                     }
+                    Log.d("Utility","get response");
                     if(listener!=null){
                         listener.onFinish(response.toString());
                     }
 
                 } catch (Exception e) {
-                    listener.onError(e);
+                    if(listener!=null){
+                        listener.onError(e);
+                    }
                 }finally {
-                    connection.disconnect();
+                    if(connection!=null){
+                        connection.disconnect();
+                    }
+
                 }
             }
         }).start();
